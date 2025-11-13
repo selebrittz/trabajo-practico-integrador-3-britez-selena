@@ -2,7 +2,7 @@ export const Navbar = () => {
   return (
     <nav
       className="navbar navbar-expand-lg"
-      style={{ backgroundColor: "#800020" }}
+      style={{ backgroundColor: "#FFB5CD" }}
     >
       <div className="container-fluid">
         <a className="navbar-brand text-white fw-bold" href="#">
