@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router";
 import { useForm } from "../hooks/useForm";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export const Register = () => {
+  const navigate = useNavigate();
   const {
     formState,
     username,
@@ -24,6 +26,7 @@ export const Register = () => {
     // Guardar el formulario completo en localStorage
     localStorage.setItem("user", JSON.stringify(formState));
     console.log(formState);
+    navigate("/login");
     handleReset();
   };
 

@@ -1,19 +1,17 @@
-import { Navbar } from "./components/Navbar";
-import { Loading } from "./components/Loading";
-import { Footer } from "./components/Footer";
-import { Register } from "./pages/Register";
+import { useState } from "react";
+import { AppRouter } from "./router/AppRouter";
 
 export const App = () => {
-  const isLoading = false;
+   const [isLogged, setIsLogged] = useState(false)
+   
+   const handleLogin = () => setIsLogged (true)
+
+   const handleLogout = () => setIsLogged (false)
+
 
   return (
     <>
-      <Navbar />
-      {isLoading ? <Loading /> : <p>¡Mi Api cargada!</p>}
-
-      <Register />
-
-      <Footer />
+      <AppRouter isLogged = {isLogged} onLogin={handleLogin} onLogout= {handleLogout} />
     </>
   );
 };
