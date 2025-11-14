@@ -1,32 +1,57 @@
 import { useNavigate } from "react-router";
 import { useForm } from "../hooks/useForm";
 
-export const Login = ({ onLogin }) => {
+export const Login = () => {
   const navigate = useNavigate();
-  const { formState, username, password, handleChange, handleReset } = useForm({
+  const { username, password, handleChange, handleReset } = useForm({
     username: "",
     password: "",
   });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formState);
+    const payload = {
+      username,
+      password,
+    };
 
-    const storedUser = JSON.parse(localStorage.getItem("user"));
+    try {
+      const response = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    if (
-      storedUser &&
-      storedUser.username === username &&
-      storedUser.password === password
-    ) {
-      onLogin(username);
-      navigate("/home");
-      handleReset();
-    } else {
-      alert("Usuario o contraseña incorrectos");
-      navigate("/register");
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("login exitoso");
+        navigate("/home");
+      } else {
+        alert(data.message);
+        navigate("/register");
+      }
+    } catch (error) {
+      console.log(error);
     }
+    handleReset();
   };
+  // console.log(formState);
+  // const storedUser = JSON.parse(localStorage.getItem("user"));
+
+  // if (
+  //   storedUser &&
+  //   storedUser.username === username &&
+  //   storedUser.password === password
+  // ) {
+  //   onLogin(username);
+  //   navigate("/home");
+  //   handleReset();
+  //   } else {
+  //     alert("Usuario o contraseña incorrectos");
+  //     navigate("/register");
+  //   }
+  // };
 
   //  busca en el almacenamiento local del navegador (localStorage) el usuario que guardaste desde tu formulario de registro.
 

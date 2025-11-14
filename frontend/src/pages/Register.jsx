@@ -1,33 +1,58 @@
 import { useNavigate } from "react-router";
 import { useForm } from "../hooks/useForm";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 export const Register = () => {
   const navigate = useNavigate();
+
   const {
-    formState,
+    name,
+    lastname,
     username,
     email,
     password,
-    firstname,
-    lastname,
     handleChange,
     handleReset,
   } = useForm({
+    name: "",
+    lastname: "",
     username: "",
     email: "",
     password: "",
-    firstname: "",
-    lastname: "",
   });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Guardar el formulario completo en localStorage
-    localStorage.setItem("user", JSON.stringify(formState));
-    console.log(formState);
-    navigate("/login");
-    handleReset();
+
+    const payload = {
+      name,
+      lastname,
+      username,
+      email,
+      password,
+    };
+
+    try {
+      const response = await fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      console.log(response);
+
+      if (response.ok) {
+        alert("Registro exitoso.");
+        handleReset();
+        navigate("/login");
+      } else {
+        alert(data.message || "Error al registrar");
+      }
+    } catch (error) {
+      console.log("ERROR:", error);
+      alert("Error en la petición");
+    }
   };
 
   return (
@@ -42,65 +67,55 @@ export const Register = () => {
       >
         <h2 className="mb-4 text-center">Register</h2>
 
-        <div className="mb-3">
-          <input
-            type="text"
-            name="username"
-            className="form-control"
-            placeholder="Username"
-            value={username}
-            required
-            onChange={handleChange}
-          />
-        </div>
+        <input
+          type="text"
+          name="name"
+          className="form-control mb-3"
+          placeholder="Name"
+          value={name}
+          required
+          onChange={handleChange}
+        />
 
-        <div className="mb-3">
-          <input
-            type="email"
-            name="email"
-            className="form-control"
-            placeholder="Email"
-            value={email}
-            required
-            onChange={handleChange}
-          />
-        </div>
+        <input
+          type="text"
+          name="lastname"
+          className="form-control mb-3"
+          placeholder="Lastname"
+          value={lastname}
+          required
+          onChange={handleChange}
+        />
 
-        <div className="mb-3">
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            placeholder="Password"
-            value={password}
-            required
-            onChange={handleChange}
-          />
-        </div>
+        <input
+          type="text"
+          name="username"
+          className="form-control mb-3"
+          placeholder="Username"
+          value={username}
+          required
+          onChange={handleChange}
+        />
 
-        <div className="mb-3">
-          <input
-            type="text"
-            name="firstname"
-            className="form-control"
-            placeholder="First Name"
-            value={firstname}
-            required
-            onChange={handleChange}
-          />
-        </div>
+        <input
+          type="email"
+          name="email"
+          className="form-control mb-3"
+          placeholder="Email"
+          value={email}
+          required
+          onChange={handleChange}
+        />
 
-        <div className="mb-3">
-          <input
-            type="text"
-            name="lastname"
-            className="form-control"
-            placeholder="Last Name"
-            value={lastname}
-            required
-            onChange={handleChange}
-          />
-        </div>
+        <input
+          type="password"
+          name="password"
+          className="form-control mb-3"
+          placeholder="Password"
+          value={password}
+          required
+          onChange={handleChange}
+        />
 
         <button type="submit" className="btn btn-light w-100">
           Registrarse
