@@ -2,6 +2,7 @@ import { PersonModel } from "../models/person.model.js";
 import { UserModel } from "../models/user.model.js";
 import { UserRoleModel } from "../models/user_role.model.js";
 import { generateToken } from "../utils/jwt.util.js";
+import { RoleModel } from "../models/role.model.js";
 
 export const login = async (req, res) => {
   const { username, password } = req.body;
@@ -41,12 +42,15 @@ export const register = async (req, res) => {
       person_id: persona.dataValues.id,
     });
     // Asignar role 'user' por defecto
-    const roleUser = await UserRoleModel.findOne({ where: { role_id: 2 } });
-    const roles = roleUser.role_id;
-    await UserRoleModel.create({ user_id: user.id, role_id: roles });
+    // const roleUser = await RoleModel.findOne({ where: { id: 2 } });
+    // const roles = roleUser.id;
+    // await UserRoleModel.create({ user_id: user.id, role_id: roles });
     return res.status(201).json({ message: "Usuario registrado exitosamente" });
   } catch (error) {
-    return res.status(500).json({ message: "Error al registrar usuario", error });
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Error al registrar usuario", error });
   }
 };
 
