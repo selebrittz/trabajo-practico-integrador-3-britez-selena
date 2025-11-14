@@ -5,19 +5,24 @@ import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Home } from "../pages/Home";
 
-export const AppRouter = ({ isLogged, onLogin }) => {
+export const AppRouter = ({ authStatus, onLogin }) => {
   return (
     <Routes>
-      <Route element={<PublicRoutes isLogged={isLogged} />}>
+      <Route element={<PublicRoutes isLogged={authStatus} />}>
         <Route path="register" element={<Register />} />
-        <Route path="login" element={<Login onLogin={onLogin} />} />
+        <Route path="login" element={<Login handleLogin={onLogin} />} />
       </Route>
 
-      <Route element={<PrivateRoutes isLogged={isLogged} />}>
+      <Route element={<PrivateRoutes isLogged={authStatus} />}>
         <Route path="home" element={<Home />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/Home" />}></Route>
+      <Route
+        path="*"
+        element={
+          authStatus ? <Navigate to="/Home" /> : <Navigate to="/login" />
+        }
+      ></Route>
     </Routes>
   );
 };
