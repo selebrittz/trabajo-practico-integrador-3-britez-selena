@@ -1,33 +1,51 @@
+import { Link, useNavigate } from "react-router";
+
 export const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async (e) => {
+    try {
+      const resp = await fetch("http://localhost:3000/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (resp.ok) {
+        alert("Sesión cerrada");
+        navigate("/login");
+      } else {
+        alert("Error al cerrar sesión");
+      }
+    } catch (error) {
+      console.log("Error logout:", e.error);
+    }
+  };
+
   return (
     <nav
-      className="navbar navbar-expand-lg"
-      style={{ backgroundColor: "#FFB5CD" }}
+      className="d-flex justify-content-between align-items-center px-4 py-3"
+      style={{ backgroundColor: "#FFB5CD", color: "white" }}
     >
-      <div className="container-fluid">
-        <a className="navbar-brand text-white fw-bold" href="#">
-          Nuestra API
-        </a>
+      <h4 className="m-0" style={{ fontWeight: "bold" }}>
+        Mi App
+      </h4>
 
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <a className="nav-link text-white" href="#">
-                Home
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link text-white" href="#">
-                Tasks
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link text-white" href="#">
-                Profile
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div className="d-flex gap-3">
+        <Link to="/home" className="text-white text-decoration-none">
+          Home
+        </Link>
+
+        <Link to="/tasks" className="text-white text-decoration-none">
+          Tasks
+        </Link>
+
+        <Link to="/profile" className="text-white text-decoration-none">
+          Profile
+        </Link>
+
+        <button onClick={handleLogout} className="btn btn-light btn-sm">
+          Logout
+        </button>
       </div>
     </nav>
   );

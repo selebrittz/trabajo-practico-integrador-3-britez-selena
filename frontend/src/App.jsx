@@ -27,16 +27,14 @@ export const App = () => {
     checkAuth();
   }, []);
 
-
   const handleLogin = () => {
-    setIsLogged(true)
-  }
-
-  if (loading) <h1> Cargando...</h1>;
+    setIsLogged(true);
+  };
+  if (loading) return <h1>Cargando...</h1>;
 
   return (
     <>
-      <AppRouter authStatus = {isLogged} onLogin={handleLogin} />
+      <AppRouter authStatus={isLogged} onLogin={handleLogin} />
     </>
   );
 };

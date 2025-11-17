@@ -1,8 +1,26 @@
 import { Navigate, Outlet } from "react-router";
+import { useState, useEffect } from "react";
 
-export const PublicRoutes = ({ isLogged}) => {
+export const PublicRoutes = () => {
+  const [isAuth, setIsAuth] = useState(null);
 
-  // Si NO está logueado, dejamos que vea la página (Outlet)
-  // Si está logueado, lo mandamos al home
-  return !isLogged ? <Outlet /> : <Navigate to="/home" />;
+  const checkAuth = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/profile", {
+        credentials: "include",
+      });
+
+      setIsAuth(response.ok);
+    } catch (e) {
+      setIsAuth(false);
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  if (isAuth === null) return <p>Cargando...</p>;
+
+  return isAuth ? <Navigate to="/home" /> : <Outlet />;
 };

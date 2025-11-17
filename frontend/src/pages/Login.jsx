@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import { useForm } from "../hooks/useForm";
 
-export const Login = (handleLogin) => {
+export const Login = ( {handleLogin}) => {
   const navigate = useNavigate();
   const { username, password, handleChange, handleReset } = useForm({
     username: "",
@@ -27,7 +27,7 @@ export const Login = (handleLogin) => {
 
       if (response.ok) {
         alert("login exitoso");
-        handleLogin(true)
+        handleLogin(true);
         navigate("/home");
       } else {
         alert(data.message);
