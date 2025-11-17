@@ -6,7 +6,7 @@ import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Home } from "../pages/Home";
 
-export const AppRouter = ({ authStatus, onLogin }) => {
+export const AppRouter = ({ authStatus }) => {
   return (
     <Routes>
       <Route element={<PublicRoutes />}>

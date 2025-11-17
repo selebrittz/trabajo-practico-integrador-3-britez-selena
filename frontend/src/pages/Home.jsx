@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 
 export const Home = () => {
@@ -32,8 +31,6 @@ export const Home = () => {
 
   return (
     <>
-      <Navbar />
-
       <main
         className="d-flex justify-content-center align-items-center vh-100"
         style={{ backgroundColor: "#f5f5f5" }}
@@ -51,7 +48,9 @@ export const Home = () => {
           {isLoading ? (
             <p>Cargando usuario...</p>
           ) : (
-            <h4>Bienvenido, {user?.name} {user?.lastname}</h4>
+            <h4>
+              Bienvenido, {user?.name} {user?.lastname}
+            </h4>
           )}
         </div>
       </main>
