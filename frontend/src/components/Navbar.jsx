@@ -1,23 +1,43 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
+import { useEffect, useState } from "react";
 
 export const Navbar = () => {
+  const [authenticated, setAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleLogout = async (e) => {
+  useEffect(() => {
+    const checkProfile = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/profile", {
+          method: "GET",
+          credentials: "include",
+        });
+
+        setAuthenticated(res.ok);
+      } catch {
+        setAuthenticated(false);
+      }
+    };
+
+    checkProfile();
+  }, [location]);
+
+  const handleLogout = async () => {
     try {
-      const resp = await fetch("http://localhost:3000/api/logout", {
+      const res = await fetch("http://localhost:3000/api/logout", {
         method: "POST",
         credentials: "include",
       });
 
-      if (resp.ok) {
-        alert("Sesión cerrada");
+      if (res.ok) {
+        setAuthenticated(false);
         navigate("/login");
       } else {
         alert("Error al cerrar sesión");
       }
-    } catch (error) {
-      console.log("Error logout:", e.error);
+    } catch {
+      alert("No se pudo cerrar sesión");
     }
   };
 
@@ -31,21 +51,34 @@ export const Navbar = () => {
       </h4>
 
       <div className="d-flex gap-3">
-        <Link to="/home" className="text-white text-decoration-none">
-          Home
-        </Link>
+        {!authenticated && (
+          <>
+            <Link className="text-white text-decoration-none" to="/login">
+              Login
+            </Link>
+            <Link className="text-white text-decoration-none" to="/register">
+              Register
+            </Link>
+          </>
+        )}
 
-        <Link to="/tasks" className="text-white text-decoration-none">
-          Tasks
-        </Link>
+        {authenticated && (
+          <>
+            <Link className="text-white text-decoration-none" to="/home">
+              Home
+            </Link>
+            <Link className="text-white text-decoration-none" to="/tasks">
+              Tasks
+            </Link>
+            <Link className="text-white text-decoration-none" to="/profile">
+              Profile
+            </Link>
 
-        <Link to="/profile" className="text-white text-decoration-none">
-          Profile
-        </Link>
-
-        <button onClick={handleLogout} className="btn btn-light btn-sm">
-          Logout
-        </button>
+            <button onClick={handleLogout} className="btn btn-light btn-sm">
+              Logout
+            </button>
+          </>
+        )}
       </div>
     </nav>
   );

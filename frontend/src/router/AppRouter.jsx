@@ -5,6 +5,7 @@ import { PrivateRoutes } from "./PrivateRoutes";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Home } from "../pages/Home";
+import { Tasks } from "../pages/Tasks";
 
 export const AppRouter = ({ authStatus }) => {
   return (
@@ -16,6 +17,7 @@ export const AppRouter = ({ authStatus }) => {
 
       <Route element={<PrivateRoutes />}>
         <Route path="home" element={<Home />} />
+        <Route path="tasks" element={<Tasks />} />
       </Route>
 
       <Route
